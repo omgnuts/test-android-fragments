@@ -1,0 +1,2 @@
+include ':study-fragments'
+project(':study-fragments').projectDir = new File('mod_library')
