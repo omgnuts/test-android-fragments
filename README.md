@@ -4,6 +4,8 @@
 
 Using AppCompatActivity.
 
+Using com.jattcode.activity.demo1
+
 EditText@+id means an editText with an id
 EditText@!id means an editText without an id
 
