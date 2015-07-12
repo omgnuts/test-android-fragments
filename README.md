@@ -32,7 +32,7 @@ Start RandomActivity -> orientate -> orientate (back to portrait) -> backpress
 
 - All inputs keep value!!
 
-*This means that StatefulActivity preserves its state until the moment it does OnStart() - to verify*
+**This means that StatefulActivity preserves its state until the moment it does OnStart() - to verify**
 
 # B. Home
 
