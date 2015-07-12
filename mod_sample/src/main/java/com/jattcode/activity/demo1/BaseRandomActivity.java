@@ -1,4 +1,4 @@
-package com.jattcode.activity;
+package com.jattcode.activity.demo1;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.jattcode.activity.demo.RandomActivity;
 import com.jattcode.fragment.R;
 
 public abstract class BaseRandomActivity extends AppCompatActivity {
@@ -23,7 +22,7 @@ public abstract class BaseRandomActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_random);
+        setContentView(R.layout.activity_demo1_random);
 
         getTextView().setText(String.valueOf(System.currentTimeMillis()));
 

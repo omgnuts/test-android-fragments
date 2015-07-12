@@ -1,4 +1,4 @@
-package com.jattcode.activity;
+package com.jattcode.activity.demo1;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.jattcode.activity.demo.RandomActivity;
-import com.jattcode.activity.demo.StatefulActivity;
 import com.jattcode.fragment.R;
 
 public abstract class BaseStatefulActivity extends AppCompatActivity {
@@ -34,7 +32,7 @@ public abstract class BaseStatefulActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_stateful);
+        setContentView(R.layout.activity_demo1_stateful);
 
         getButtonSimulateInput().setOnClickListener(
                 new View.OnClickListener() {

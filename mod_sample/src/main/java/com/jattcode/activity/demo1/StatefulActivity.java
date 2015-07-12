@@ -1,8 +1,6 @@
-package com.jattcode.activity.demo;
+package com.jattcode.activity.demo1;
 
 import android.os.Bundle;
-
-import com.jattcode.activity.BaseStatefulActivity;
 
 public class StatefulActivity extends BaseStatefulActivity {
 
