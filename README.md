@@ -6,7 +6,8 @@ EditText@!id means an editText without an id
 All tests start in portrait mode
 Three widgets (EditText@+id, TextView@+id, EditText@!id):
 
-1. Orientation.
+###. Orientation.
+
 StatefulActivity at front.
 
 - Only EditText@+id keeps value
