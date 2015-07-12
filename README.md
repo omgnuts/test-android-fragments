@@ -10,9 +10,10 @@ Three widgets (EditText@+id, TextView@+id, EditText@!id):
 
 ### A1. StatefulActivity at front. Generate user inputs for all.
 
+```
 Orientate
-
 - Only EditText@+id keeps value
+```
 
 ### A2. StatefulActivity behind. Generate user inputs for all.
 
@@ -23,15 +24,17 @@ Start RandomActivity -> backpress.
 
 ### A3. StatefulActivity behind. Generate user inputs for all.
 
+```
 Start RandomActivity -> orientate -> backpress
-
 - Only EditText@+id keeps value
+```
 
 ### A4. StatefulActivity behind. Generate user inputs for all.
 
+```
 Start RandomActivity -> orientate -> orientate (back to portrait) -> backpress
-
 - All inputs keep value!!
+```
 
 **This means that StatefulActivity preserves its state until the moment it does OnStart() - to verify**
 
@@ -39,7 +42,8 @@ Start RandomActivity -> orientate -> orientate (back to portrait) -> backpress
 
 ### B1. StatefulActivity at front. Generate user inputs for all
 
+```
 Press HOME. Return to app.
-
 - Only EditText@+id keeps value
+```
 
