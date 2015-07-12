@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext {
-    app_id = 'com.jattcode.fragments' // usually the namespace. Note it is not the same as package
+    app_id = 'com.jattcode.fragment' // usually the namespace. Note it is not the same as package
     app_version_code = 1
     app_version = '0.1x'
     android_build_sdk_version = ANDROID_BUILD_SDK_VERSION as int
