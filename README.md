@@ -8,26 +8,27 @@ Three widgets (EditText@+id, TextView@+id, EditText@!id):
 
 ### Orientation.
 
-StatefulActivity at front.
+1. StatefulActivity at front.
 
 - Only EditText@+id keeps value
 
-StatefulActivity behind. Generate user inputs for all.
+2. StatefulActivity behind. Generate user inputs for all.
+
 Start RandomActivity -> backpress.
 
 - All inputs keep value.
 
-StatefulActivity behind. Generate user inputs for all.
+3. StatefulActivity behind. Generate user inputs for all.
+
 Start RandomActivity -> orientate -> backpress
 
 - Only EditText@+id keeps value
 
-StatefulActivity behind. Generate user inputs for all.
+4. StatefulActivity behind. Generate user inputs for all.
+
 Start RandomActivity -> orientate -> orientate (back to portrait) -> backpress
 
 - All inputs keep value!!
-
-
 
 5. StatefulActivity at front.
 
