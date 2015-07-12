@@ -58,5 +58,8 @@ Start RandomActivity. Press HOME. Return to app -> backpress.
 
 ```
 For activities, it looks like most views implement inner statefuls to handle home / backpress. 
-The problem child is perhaps only orientation changes. The states are probably ONLY lost when the oriented activity performs onStart(). Apparently when its in the background, the stateful activity happily accepts ALL orientation changes. So when it is portrait just before returning to the foreground, it keeps all values. 
+The problem child is perhaps only orientation changes. The states are probably ONLY lost when 
+the oriented activity performs onStart(). Apparently when its in the background, the stateful 
+activity happily accepts ALL orientation changes. So when it is portrait just before returning 
+to the foreground, it keeps all values. 
 ```
