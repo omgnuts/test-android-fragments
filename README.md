@@ -9,15 +9,11 @@ All tests start in portrait mode
 Three widgets (EditText@+id, TextView@+id, EditText@!id):
 
 ### A1. StatefulActivity at front. Generate user inputs for all.
-
 Orientate
-
 - Only EditText@+id keeps value
 
 ### A2. StatefulActivity behind. Generate user inputs for all.
-
 Start RandomActivity -> backpress.
-
 - All inputs keep value.
 
 ### A3. StatefulActivity behind. Generate user inputs for all.
