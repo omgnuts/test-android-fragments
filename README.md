@@ -1,4 +1,8 @@
-# Simple Tests (Backpress/Orientation/Home)
+
+
+# Section 1 - Activity Tests (Backpress/Orientation/Home)
+
+Using AppCompatActivity.
 
 EditText@+id means an editText with an id
 EditText@!id means an editText without an id
