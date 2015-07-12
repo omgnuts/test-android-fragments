@@ -1,36 +1,44 @@
+# Simple Tests (Backpress/Orientation/Home)
+
 EditText@+id means an editText with an id
 EditText@!id means an editText without an id
 
-# Simple Tests (Backpress/Orientation/Home)
+# A. Orientation/Backpress
 
 All tests start in portrait mode
 Three widgets (EditText@+id, TextView@+id, EditText@!id):
 
-### Orientation.
+### A1. StatefulActivity at front. Generate user inputs for all.
 
-1. StatefulActivity at front.
+Orientate
 
 - Only EditText@+id keeps value
 
-2. StatefulActivity behind. Generate user inputs for all.
+### A2. StatefulActivity behind. Generate user inputs for all.
 
 Start RandomActivity -> backpress.
 
 - All inputs keep value.
 
-3. StatefulActivity behind. Generate user inputs for all.
+### A3. StatefulActivity behind. Generate user inputs for all.
 
 Start RandomActivity -> orientate -> backpress
 
 - Only EditText@+id keeps value
 
-4. StatefulActivity behind. Generate user inputs for all.
+### A4. StatefulActivity behind. Generate user inputs for all.
 
 Start RandomActivity -> orientate -> orientate (back to portrait) -> backpress
 
 - All inputs keep value!!
 
-5. StatefulActivity at front.
+*This means that StatefulActivity preserves its state until the moment it does OnStart() - to verify*
+
+# B. Home
+
+### B1. StatefulActivity at front. Generate user inputs for all
+
+Press HOME. Return to app.
 
 - Only EditText@+id keeps value
 
