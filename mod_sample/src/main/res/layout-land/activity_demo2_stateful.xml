@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:text="layout/res (default)"
+        android:text="layout/res (landscape)"
         />
 
     <include layout="@layout/include_demo2" />
