@@ -65,6 +65,8 @@ private void onRelease() {
 Don't restore onCreate. Just use onRestoreInstanceState ONLY.
 http://developer.android.com/training/basics/activity-lifecycle/recreating.html#RestoreState
 
+This will also be sufficient to handle orientation changes using different layouts. However, the ids implemented must be similar. Therefore, try to write codes in layout-port & layout-land. only use layout/ for shared resources such as includes. 
+
 ```
 public void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
