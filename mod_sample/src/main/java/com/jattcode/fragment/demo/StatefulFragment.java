@@ -3,7 +3,6 @@ package com.jattcode.fragment.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jattcode.activity.RandomActivity;
-import com.jattcode.fragment.BaseLoggerFragment;
 import com.jattcode.fragment.R;
 import com.jattcode.fragment.Screen;
-import com.jattcode.fragment.ScreenCompatActivity;
 import com.jattcode.fragment.ScreenFragment;
-import com.jattcode.fragment.ScreenSwitcher;
 import com.jattcode.fragment.SwitcherActivity;
 
 /**
@@ -74,9 +70,9 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         onInitViews();
 
         // check if a state was stored via onDestroy
-        Bundle viewState = getSwitcher().getState(toString());
         if (viewState != null) {
             onRestoreViewState(viewState);
+            viewState = null;
         }
 
         return parentView;
@@ -178,10 +174,12 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         }
     }
 
+    private Bundle viewState = null;
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getSwitcher().putState(toString(), onSaveViewState(null));
+        viewState = onSaveViewState(null);
     }
 
     public void onDestroy() {
@@ -189,11 +187,7 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         // just to remove any residual references
         // in case the fragment instance was destroyed permanently
         // before its views ever got recreated.
-        getSwitcher().getState(toString());
+        viewState = null;
     }
 
-    @Override
-    public boolean onBackPressed() {
-        return true;
-    }
 }
