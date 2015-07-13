@@ -105,6 +105,8 @@ protected void onCreate(Bundle savedInstanceState) {
 
 There is another mutually exclusive method to handle orientation via onConfigurationChanged. This is when you are carrying a heavy load of data in the activity.
 
+*If your application doesn't need to update resources during a specific configuration change and you have a performance limitation that requires you to avoid the activity restart, then you can declare that your activity handles the configuration change itself, which prevents the system from restarting your activity.*
+
 For comparison, 
 - the default android method handles orientation by saving and restoring both view (android) + member (you) states. The full activity cycle is being called. listeners have to be reactivated etc. 
 - onConfigurationChange allows you to manually restore a new view, initViews. The member states are preserved. So you do not need to make large arrays parcelable. listeners are also not disrupted. Progress dialogs however may ahve to be dismissed (need to check). It is also useful if you are using a lot of fragments. So the data of the fragments are not destroyed (how to handle initViews? - similar?)
@@ -154,32 +156,4 @@ Checked:
 - it jumps back to recreate just the views, but everything else is not lost.
 - you need to however, a) setup ui clickers, b) load the data back to views.
 
-Good explanation from https://github.com/codepath/android_guides/wiki/Handling-Configuration-Changes
-
-If your application doesn't need to update resources during a specific configuration change and you have a performance limitation that requires you to avoid the activity restart, then you can declare that your activity handles the configuration change itself, which prevents the system from restarting your activity.
-
-However, this technique should be considered a last resort when you must avoid restarts due to a configuration change and is not recommended for most applications. To take this approach, we must add the android:configChanges node to the activity within the AndroidManifest.xml:
-
-```
-<activity android:name=".MyActivity"
-          android:configChanges="orientation|screenSize|keyboardHidden"
-          android:label="@string/app_name">
-```
-
-Now, when one of these configurations change, the activity does not restart but instead receives a call to onConfigurationChanged():
-
-```
-// Within the activity which receives these changes
-// Checks the current device orientation, and toasts accordingly
-@Override
-public void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-
-    // Checks the orientation of the screen
-    if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        Toast.makeText(this, "landscape", Toast.LENGTH_SHORT).show();
-    } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-        Toast.makeText(this, "portrait", Toast.LENGTH_SHORT).show();
-    }
-}
-```
+Also see https://github.com/codepath/android_guides/wiki/Handling-Configuration-Changes
