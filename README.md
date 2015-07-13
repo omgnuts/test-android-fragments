@@ -110,7 +110,7 @@ There is another mutually exclusive method to handle orientation via onConfigura
 
 For comparison, 
 - the default android method handles orientation by saving and restoring both view + member states. The full activity cycle is being called. 
-- onConfigurationChange allows you to manually restore a new view, initViews. The member states are preserved. So you do not need to make large arrays parcelable.
+- onConfigurationChange allows you to manually restore a new view, initViews. The member states are preserved. So you do not need to make large arrays parcelable. listeners are also not disrupted. Progress dialogs however may ahve to be dismissed (need to check).
 
 Checked:
 - Configuration change also switches to use layout-land from layout-port 
