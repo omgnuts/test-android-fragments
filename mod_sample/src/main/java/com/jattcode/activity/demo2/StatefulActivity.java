@@ -1,6 +1,7 @@
 package com.jattcode.activity.demo2;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -35,7 +36,7 @@ public class StatefulActivity extends BaseLoggerActivity {
     }
 
     private String property = "(property is unset)";
-
+    private ArrayAdapter<String> adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,11 @@ public class StatefulActivity extends BaseLoggerActivity {
 
         setContentView(R.layout.activity_demo2_stateful);
 
-        getButtonSimulateProperty().setOnClickListener(clicker);
-        getButtonDisplayProperty().setOnClickListener(clicker);
-        getButtonStartActivity().setOnClickListener(clicker);
+        onLoadModel();
+        onInitViews();
+    }
 
+    private void onLoadModel() {
         String[] items = {
                 "START",
                 "Milk", "Butter", "Yogurt", "Toothpaste", "Ice Cream",
@@ -59,10 +61,17 @@ public class StatefulActivity extends BaseLoggerActivity {
                 "Milk", "Butter", "Yogurt", "Toothpaste", "Ice Cream",
                 "END"
         };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
-        getListView().setAdapter(adapter);
 
+        adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, items);
+    }
+
+    private void onInitViews() {
+        getButtonSimulateProperty().setOnClickListener(clicker);
+        getButtonDisplayProperty().setOnClickListener(clicker);
+        getButtonStartActivity().setOnClickListener(clicker);
+
+        getListView().setAdapter(adapter);
     }
 
 
@@ -71,6 +80,8 @@ public class StatefulActivity extends BaseLoggerActivity {
         public void onClick(View v) {
             Intent intent;
             int position;
+
+            logState("clicker is called");
 
             switch (v.getId()) {
                 case android.R.id.button1: // getButtonSimulateProperty
@@ -81,10 +92,15 @@ public class StatefulActivity extends BaseLoggerActivity {
                     break;
 
                 case android.R.id.button3: // getButtonDisplayProperty
-                    position = getListView().getFirstVisiblePosition();
-                    String item = (String) getListView().getAdapter().getItem(position);
 
-                    getTextView().setText(property + " And so is " + item);
+                    try {
+                        position = getListView().getFirstVisiblePosition();
+                        String item = (String) getListView().getAdapter().getItem(position);
+
+                        getTextView().setText(property + " And so is " + item);
+                    } catch (NullPointerException e) {
+                        getTextView().setText(property + " And so is " + "(unset)");
+                    }
 
                     break;
                 case android.R.id.button2: // getButtonStartActivity()
@@ -104,11 +120,43 @@ public class StatefulActivity extends BaseLoggerActivity {
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
         logState("onRestoreInstanceState: savedInstanceState = " + savedInstanceState);
-
         if (savedInstanceState != null)
             property = savedInstanceState.getString("save:property", null);
-
     }
+
+    private Bundle onSaveViewStates() {
+        Bundle bundle = new Bundle();
+
+        int position = getListView().getFirstVisiblePosition();
+        bundle.putInt("save:position", position);
+        bundle.putString("save:textview", getTextView().getText().toString());
+        return bundle;
+    }
+
+    private void onRestoreViewStates(final Bundle bundle) {
+        int position = bundle.getInt("save:position");
+        getListView().setSelection(position);
+
+        String text = bundle.getString("save:textview");
+        getTextView().setText(text);
+    }
+
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Bundle bundle = onSaveViewStates();
+
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            logState("onConfigurationChanged: Configuration.ORIENTATION_PORTRAIT");
+            setContentView(R.layout.activity_demo2_stateful);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            logState("onConfigurationChanged: Configuration.ORIENTATION_LANDSCAPE");
+            setContentView(R.layout.activity_demo2_stateful);
+        }
+
+        onInitViews();
+        onRestoreViewStates(bundle);
+    }
+
 }
