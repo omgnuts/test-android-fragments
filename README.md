@@ -58,13 +58,34 @@ private void onRelease() {
   // deregister 
 }
 
-``
+```
 
 ### Handle orientation / home
 
 Don't restore onCreate. Just use onRestoreInstanceState ONLY.
+http://developer.android.com/training/basics/activity-lifecycle/recreating.html#RestoreState
 
 ```
+public void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
 
+    // Just handle your property members. Don't save view states. 
+    
+    // eg. edittext - auto saves its text
+    // eg. listview - auto saves its firstvisibleposition
+    
+    // however, the text in textview is not a state. 
+    // it displays text based on some member property. 
+    // so you need to save the member property and display it.
+    
+    // dont jump in to write code to handle this unless you are sure it is not already handled
+}
+
+protected void onSaveInstanceState(Bundle savedInstanceState) {
+    super.onSaveInstanceState(savedInstanceState);
+    
+}
+
+```
 
 
