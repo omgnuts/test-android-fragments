@@ -67,7 +67,7 @@ http://developer.android.com/training/basics/activity-lifecycle/recreating.html#
 
 This will also be sufficient to handle orientation changes using different layouts. However, the ids implemented must be similar. Therefore, try to write codes in layout-port & layout-land. only use layout/ for shared resources such as includes. 
 
-However, you should NOT load the datamodel (eg. downloading adverts) if you are restoring states. Just onInitViews() will suffice (eg. set adapter to view, set clickers etc)
+However, you also NEED to load the datamodel (eg. downloading adverts) and call onInitViews()  (eg. set adapter to view, set clickers etc)
 
 ```
 public void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -94,11 +94,7 @@ protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     setContentView();
-
-    if (savedInstanceState == null) {
-        onLoadModel();
-    }
-    
+    onLoadModel();
     onInitViews();
 }
 
@@ -106,11 +102,49 @@ protected void onCreate(Bundle savedInstanceState) {
 
 ### Handle orientation via onConfigurationChanged. 
 
-There is another mutually exclusive method to handle orientation via onConfigurationChanged. 
+There is another mutually exclusive method to handle orientation via onConfigurationChanged. This is when you are carrying a heavy load of data in the activity.
 
 For comparison, 
-- the default android method handles orientation by saving and restoring both view + member states. The full activity cycle is being called. 
-- onConfigurationChange allows you to manually restore a new view, initViews. The member states are preserved. So you do not need to make large arrays parcelable. listeners are also not disrupted. Progress dialogs however may ahve to be dismissed (need to check).
+- the default android method handles orientation by saving and restoring both view (android) + member (you) states. The full activity cycle is being called. listeners have to be reactivated etc. 
+- onConfigurationChange allows you to manually restore a new view, initViews. The member states are preserved. So you do not need to make large arrays parcelable. listeners are also not disrupted. Progress dialogs however may ahve to be dismissed (need to check). It is also useful if you are using a lot of fragments. So the data of the fragments are not destroyed (how to handle initViews? - similar?)
+
+The downside of onConfigurationChange however, is that you lose all viewstates. For example the firstvisibleviewposition of the listview is not saved. So you need to save that position as a member property as the user scrolls. 
+However, you can manually save the view states using a bundle within the onConfigurationChanged. It is not hard. just tedious
+
+```
+private Bundle onSaveViewStates() {
+    Bundle bundle = new Bundle();
+    ...
+    int position = getListView().getFirstVisiblePosition();
+    bundle.putInt("save:position", position);
+    bundle.putString("save:textview", getTextView().getText().toString());
+    
+    return bundle;
+}
+
+private void onRestoreViewStates(Bundle bundle) {
+    ...
+    int position = bundle.getInt("save:position");
+    getListView().setSelection(position);
+    String text = bundle.getString("save:textview");
+    getTextView().setText(text);
+}
+
+public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    Bundle bundle = onSaveViewStates();
+    if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        logState("onConfigurationChanged: Configuration.ORIENTATION_PORTRAIT");
+        setContentView(R.layout.activity_demo2_stateful);
+    } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        logState("onConfigurationChanged: Configuration.ORIENTATION_LANDSCAPE");
+        setContentView(R.layout.activity_demo2_stateful);
+    }
+    onInitViews();
+    onRestoreViewStates(bundle);
+}
+
+```
 
 Checked:
 - Configuration change also switches to use layout-land from layout-port 
