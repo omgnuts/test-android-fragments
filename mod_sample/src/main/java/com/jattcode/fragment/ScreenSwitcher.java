@@ -5,10 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
-import android.util.ArrayMap;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Javan on 13/7/2015.

@@ -1,6 +1,5 @@
 package com.jattcode.fragment;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
