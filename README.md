@@ -67,6 +67,8 @@ http://developer.android.com/training/basics/activity-lifecycle/recreating.html#
 
 This will also be sufficient to handle orientation changes using different layouts. However, the ids implemented must be similar. Therefore, try to write codes in layout-port & layout-land. only use layout/ for shared resources such as includes. 
 
+However, you should NOT load the datamodel (eg. downloading adverts) if you are restoring states. Just onInitViews() will suffice (eg. set adapter to view, set clickers etc)
+
 ```
 public void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
@@ -85,13 +87,32 @@ public void onRestoreInstanceState(Bundle savedInstanceState) {
 
 protected void onSaveInstanceState(Bundle savedInstanceState) {
     super.onSaveInstanceState(savedInstanceState);
+}
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    setContentView();
+
+    if (savedInstanceState == null) {
+        onLoadModel();
+    }
     
+    onInitViews();
 }
 
 ```
 
-### On Configuration Changed.
+### Handle orientation via onConfigurationChanged. 
 
+There is another mutually exclusive method to handle orientation via onConfigurationChanged. 
+
+For comparison, 
+- the default android method handles orientation by saving and restoring both view + member states. The full activity cycle is being called. 
+- onConfigurationChange allows you to manually restore a new view, initViews. The member states are preserved. So you do not need to make large arrays parcelable.
+
+Checked:
 - Configuration change also switches to use layout-land from layout-port 
 - onpause/onstop are not called. 
 - it jumps back to recreate just the views, but everything else is not lost.
