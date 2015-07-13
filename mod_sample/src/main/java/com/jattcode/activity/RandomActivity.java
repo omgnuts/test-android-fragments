@@ -1,4 +1,4 @@
-package com.jattcode.activity.demo1;
+package com.jattcode.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,27 +9,27 @@ import android.widget.TextView;
 
 import com.jattcode.fragment.R;
 
-public abstract class BaseRandomActivity extends AppCompatActivity {
+public class RandomActivity extends AppCompatActivity {
 
-    protected TextView getTextView() {
+    private TextView getTextView() {
         return (TextView) findViewById(android.R.id.text1);
     }
 
-    protected Button getButtonStartActivity() {
+    private Button getButtonStartActivity() {
         return (Button) findViewById(android.R.id.button2);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo1_random);
+        setContentView(R.layout.activity_demo_random);
 
         getTextView().setText(String.valueOf(System.currentTimeMillis()));
 
         getButtonStartActivity().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BaseRandomActivity.this, RandomActivity.class);
+                Intent intent = new Intent(RandomActivity.this, RandomActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
