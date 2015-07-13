@@ -14,6 +14,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
     // load data
     onLoadModel();
+    onInitViews();
 }
 
 protected void onRestart() {
@@ -21,11 +22,17 @@ protected void onRestart() {
 
     // load data
     onLoadModel(); --?? Is this necessary to call it here
+    onInitViews();
 }
 
 private void onLoadModel() {
     // maybe this is where you should load all data
     // onCreate + onRestart will call this
+}
+
+private void onInitViews() {
+    // this is where you set clickers
+    // setadapters
 }
 
 ```
