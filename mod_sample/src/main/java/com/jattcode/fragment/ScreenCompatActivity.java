@@ -4,9 +4,6 @@ import android.content.Intent;
 
 import com.jattcode.activity.BaseLoggerActivity;
 
-/**
- * Created by Javan on 13/7/2015.
- */
 public abstract class ScreenCompatActivity extends BaseLoggerActivity {
 
     public ScreenCompatActivity() {

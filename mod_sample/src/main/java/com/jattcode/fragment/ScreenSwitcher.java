@@ -6,9 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
 
-/**
- * Created by Javan on 13/7/2015.
- */
 public abstract class ScreenSwitcher {
 
     // just for the loggin capabilitiues
