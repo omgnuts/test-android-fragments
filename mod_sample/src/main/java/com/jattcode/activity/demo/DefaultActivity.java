@@ -1,4 +1,4 @@
-package com.jattcode.activity.demo1;
+package com.jattcode.activity.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import com.jattcode.activity.BaseLoggerActivity;
 import com.jattcode.activity.RandomActivity;
 import com.jattcode.fragment.R;
 
-public class StatefulActivity extends BaseLoggerActivity {
+public class DefaultActivity extends BaseLoggerActivity {
 
     private EditText getEditText() {
         return (EditText) findViewById(android.R.id.edit);
@@ -33,7 +33,7 @@ public class StatefulActivity extends BaseLoggerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_demo1_stateful);
+        setContentView(R.layout.activity_demo_default);
 
         getButtonSimulateInput().setOnClickListener(
                 new View.OnClickListener() {
@@ -47,7 +47,7 @@ public class StatefulActivity extends BaseLoggerActivity {
         getButtonStartActivity().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StatefulActivity.this, RandomActivity.class);
+                Intent intent = new Intent(DefaultActivity.this, RandomActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }

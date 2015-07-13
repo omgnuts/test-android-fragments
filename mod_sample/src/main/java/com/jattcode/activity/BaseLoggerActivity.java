@@ -9,9 +9,9 @@ import android.util.Log;
  */
 public abstract class BaseLoggerActivity extends AppCompatActivity {
 
-    private static final boolean LOGGER_ON = true;
-
     private static final String TAG = BaseLoggerActivity.class.getSimpleName();
+
+    protected boolean LOGGER_ON = true;
 
     private void log(String msg) {
         if (LOGGER_ON) {

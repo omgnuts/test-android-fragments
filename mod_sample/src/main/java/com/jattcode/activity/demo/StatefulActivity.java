@@ -1,4 +1,4 @@
-package com.jattcode.activity.demo2;
+package com.jattcode.activity.demo;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -44,7 +44,7 @@ public class StatefulActivity extends BaseLoggerActivity {
 
         logState("onCreate: savedInstanceState = " + savedInstanceState);
 
-        setContentView(R.layout.activity_demo2_stateful);
+        setContentView(R.layout.activity_demo_stateful);
 
         onLoadModel();
         onInitViews();
@@ -149,10 +149,10 @@ public class StatefulActivity extends BaseLoggerActivity {
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             logState("onConfigurationChanged: Configuration.ORIENTATION_PORTRAIT");
-            setContentView(R.layout.activity_demo2_stateful);
+            setContentView(R.layout.activity_demo_stateful);
         } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             logState("onConfigurationChanged: Configuration.ORIENTATION_LANDSCAPE");
-            setContentView(R.layout.activity_demo2_stateful);
+            setContentView(R.layout.activity_demo_stateful);
         }
 
         onInitViews();

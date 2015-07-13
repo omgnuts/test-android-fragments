@@ -12,6 +12,6 @@
         android:text="layout/res (default)"
         />
 
-    <include layout="@layout/include_demo2" />
+    <include layout="@layout/include_demo_stateful" />
 
 </LinearLayout>
