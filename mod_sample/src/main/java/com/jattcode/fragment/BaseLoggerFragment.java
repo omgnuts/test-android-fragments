@@ -48,6 +48,11 @@ public abstract class BaseLoggerFragment extends Fragment {
         log("F.B-onStart: setup listeners");
     }
 
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        log("F.B2/C-onViewStateRestored: Should happen on orientation and press home. ");
+    }
+
     public void onResume() {
         super.onResume();
         log("F.C-onResume: Should NOT do anything here. Perhaps SHOW progress dialog if needed");
@@ -56,6 +61,11 @@ public abstract class BaseLoggerFragment extends Fragment {
     public void onPause() {
         super.onPause();
         log("F.D-onPause: Should NOT do anything here. Perhaps DISMISS progress dialog if needed");
+    }
+
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        log("D/E-onSaveInstanceState: Should happen on orientation and press home. not backpress");
     }
 
     public void onStop() {

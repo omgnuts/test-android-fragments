@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.jattcode.fragment.demo.DefaultFragment;
+import com.jattcode.fragment.demo.StatefulFragment;
 
 public class SwitcherActivity extends ScreenCompatActivity {
 
@@ -11,7 +12,7 @@ public class SwitcherActivity extends ScreenCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.switcher_activity);
-        switcher.rootScreen();
+        if (savedInstanceState == null) switcher.rootScreen();
     }
 
     // use class here rather than enum to keep code cleaner
@@ -36,7 +37,7 @@ public class SwitcherActivity extends ScreenCompatActivity {
         protected Fragment getFragment(int screenId) {
             switch(screenId) {
                 case ScreenType.ROOT:
-                    return new DefaultFragment();
+                    return new StatefulFragment();
                 case ScreenType.RANDOM_FRAGMENT:
                     return new RandomFragment();
                 default:

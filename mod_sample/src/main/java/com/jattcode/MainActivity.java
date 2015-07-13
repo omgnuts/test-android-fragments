@@ -54,10 +54,11 @@ public class MainActivity extends AppCompatActivity {
                     intent = new Intent(MainActivity.this, SwitcherActivity.class);
                     break;
                 case 1:
+                    intent = new Intent(MainActivity.this, DefaultActivity.class);
+                    break;
+                default: //2
                     intent = new Intent(MainActivity.this, StatefulActivity.class);
                     break;
-                default: //0
-                    intent = new Intent(MainActivity.this, DefaultActivity.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
