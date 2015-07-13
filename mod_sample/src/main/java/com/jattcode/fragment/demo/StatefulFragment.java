@@ -59,23 +59,6 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         onLoadModel();
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        logState("onCreateView - savedInstanceState = " + savedInstanceState);
-        parentView = inflater.inflate(R.layout.fragment_demo_stateful, container, false);
-
-        onInitViews();
-
-        // check if a state was stored via onDestroy
-        if (viewState != null) {
-            onRestoreViewState(viewState);
-            viewState = null;
-        }
-
-        return parentView;
-    }
-
     private void onLoadModel() {
         items = new String[] {
                 "START",
@@ -88,6 +71,17 @@ public class StatefulFragment extends ScreenFragment implements Screen {
                 "END"
         };
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+        logState("onCreateView - savedInstanceState = " + savedInstanceState);
+        parentView = inflater.inflate(R.layout.fragment_demo_stateful, container, false);
+
+        onInitViews();
+
+        return parentView;
     }
 
     private void onInitViews() {
@@ -151,40 +145,9 @@ public class StatefulFragment extends ScreenFragment implements Screen {
 
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        logState("onViewStateRestored: savedInstanceState = " + savedInstanceState);
         if (savedInstanceState != null) {
             property = savedInstanceState.getString("save:property", null);
         }
-    }
-
-    private Bundle viewState = null;
-
-    // only save as a last resort
-    private Bundle onSaveViewState() {
-        viewState = new Bundle();
-        viewState.putString("save:textview", getTextView().getText().toString());
-        return viewState;
-    }
-
-    private void onRestoreViewState(Bundle viewState) {
-        if (viewState != null) {
-            String text = viewState.getString("save:textview");
-            getTextView().setText(text);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        viewState = onSaveViewState();
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        // just to remove any residual references
-        // in case the fragment instance was destroyed permanently
-        // before its views ever got recreated.
-        viewState = null;
     }
 
 }
