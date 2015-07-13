@@ -12,13 +12,13 @@
         android:text="layout/res (default)"
         />
 
-    <include layout="@layout/include_demo_stateful" />
-
     <Button
         android:id="@+id/button4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Start Random Fragment"
         />
+
+    <include layout="@layout/include_demo_stateful" />
 
 </LinearLayout>

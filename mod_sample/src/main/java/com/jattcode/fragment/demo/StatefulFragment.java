@@ -90,7 +90,7 @@ public class StatefulFragment extends BaseLoggerFragment implements Screen {
         getButtonSimulateProperty().setOnClickListener(clicker);
         getButtonDisplayProperty().setOnClickListener(clicker);
         getButtonStartActivity().setOnClickListener(clicker);
-
+        getButtonStartFragment().setOnClickListener(clicker);
         getListView().setAdapter(adapter);
     }
 
