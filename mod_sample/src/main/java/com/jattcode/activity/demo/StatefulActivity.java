@@ -35,13 +35,12 @@ public class StatefulActivity extends BaseLoggerActivity {
         return (ListView) findViewById(android.R.id.list);
     }
 
+    String[] items;
     private String property = "(property is unset)";
-    private ArrayAdapter<String> adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         logState("onCreate: savedInstanceState = " + savedInstanceState);
 
         setContentView(R.layout.activity_demo_stateful);
@@ -51,7 +50,7 @@ public class StatefulActivity extends BaseLoggerActivity {
     }
 
     private void onLoadModel() {
-        String[] items = {
+        items = new String[] {
                 "START",
                 "Milk", "Butter", "Yogurt", "Toothpaste", "Ice Cream",
                 "Milk", "Butter", "Yogurt", "Toothpaste", "Ice Cream",
@@ -62,11 +61,12 @@ public class StatefulActivity extends BaseLoggerActivity {
                 "END"
         };
 
-        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
     }
 
     private void onInitViews() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, items);
+
         getButtonSimulateProperty().setOnClickListener(clicker);
         getButtonDisplayProperty().setOnClickListener(clicker);
         getButtonStartActivity().setOnClickListener(clicker);
@@ -125,7 +125,7 @@ public class StatefulActivity extends BaseLoggerActivity {
             property = savedInstanceState.getString("save:property", null);
     }
 
-    private Bundle onSaveViewStates() {
+    private Bundle onSaveViewState() {
         Bundle bundle = new Bundle();
 
         int position = getListView().getFirstVisiblePosition();
@@ -134,7 +134,7 @@ public class StatefulActivity extends BaseLoggerActivity {
         return bundle;
     }
 
-    private void onRestoreViewStates(final Bundle bundle) {
+    private void onRestoreViewState(final Bundle bundle) {
         int position = bundle.getInt("save:position");
         getListView().setSelection(position);
 
@@ -145,7 +145,7 @@ public class StatefulActivity extends BaseLoggerActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Bundle bundle = onSaveViewStates();
+        Bundle bundle = onSaveViewState();
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             logState("onConfigurationChanged: Configuration.ORIENTATION_PORTRAIT");
@@ -156,7 +156,7 @@ public class StatefulActivity extends BaseLoggerActivity {
         }
 
         onInitViews();
-        onRestoreViewStates(bundle);
+        onRestoreViewState(bundle);
     }
 
 }

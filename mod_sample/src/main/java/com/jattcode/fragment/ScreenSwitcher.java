@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
+import android.util.ArrayMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Javan on 13/7/2015.
@@ -36,11 +40,6 @@ public abstract class ScreenSwitcher {
 
     public void changeScreen(int screenId, Bundle bundle) {
         changeFragmentTransaction(screenId, bundle);
-    }
-
-    public boolean onBackPressed() {
-        final Screen screen = (Screen) fragmentManager.findFragmentById(containerId);
-        return screen.onBackPressed();
     }
 
     private void changeFragmentTransaction(int screenId, Bundle bundle) {
@@ -98,4 +97,26 @@ public abstract class ScreenSwitcher {
 
         }
     }
+
+    public boolean onBackPressed() {
+        final Screen screen = (Screen) fragmentManager.findFragmentById(containerId);
+        return screen.onBackPressed();
+    }
+
+    // light weight map for really small items like textview states that have not been saved
+    // NOTE: DO NOT MISUSE. It should be really small.
+    // This is to handle cases where the textviews are not recovered on backpress.
+    // other views are properly recovered
+    private final HashMap<String, Bundle> stateMap = new HashMap<String, Bundle>();
+
+    public void putState(String key, Bundle state) {
+        stateMap.put(key, state);
+    }
+
+    public Bundle getState(String key) {
+        Bundle bundle = stateMap.get(key);
+        stateMap.remove(bundle);
+        return bundle;
+    }
+
 }

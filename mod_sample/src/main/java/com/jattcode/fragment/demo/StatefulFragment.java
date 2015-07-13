@@ -3,6 +3,7 @@ package com.jattcode.fragment.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +17,14 @@ import com.jattcode.fragment.BaseLoggerFragment;
 import com.jattcode.fragment.R;
 import com.jattcode.fragment.Screen;
 import com.jattcode.fragment.ScreenCompatActivity;
+import com.jattcode.fragment.ScreenFragment;
 import com.jattcode.fragment.ScreenSwitcher;
 import com.jattcode.fragment.SwitcherActivity;
 
 /**
  * Created by Javan on 13/7/2015.
  */
-public class StatefulFragment extends BaseLoggerFragment implements Screen {
+public class StatefulFragment extends ScreenFragment implements Screen {
 
     private TextView getTextView() {
         return (TextView) parentView.findViewById(android.R.id.text1);
@@ -48,37 +50,40 @@ public class StatefulFragment extends BaseLoggerFragment implements Screen {
         return (Button) parentView.findViewById(R.id.button4);
     }
 
-    protected ScreenSwitcher getSwitcher() {
-        return ((ScreenCompatActivity)getActivity()).getSwitcher();
-    }
-
     Context context;
     View parentView;
 
+    String[] items;
     private String property = "(property is unset)";
-    private ArrayAdapter<String> adapter = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         logState("onCreate - savedInstanceState = " + savedInstanceState);
+
+        context = getActivity();
+        // unlike activity we can load models here.
+        onLoadModel();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         logState("onCreateView - savedInstanceState = " + savedInstanceState);
         parentView = inflater.inflate(R.layout.fragment_demo_stateful, container, false);
-        context = getActivity();
 
-        onLoadModel();
         onInitViews();
+
+        // check if a state was stored via onDestroy
+        Bundle extraState = getSwitcher().getState(toString());
+        if (extraState != null) {
+            onRestoreExtraState(extraState);
+        }
 
         return parentView;
     }
 
     private void onLoadModel() {
-        String[] items = {
+        items = new String[] {
                 "START",
                 "Milk", "Butter", "Yogurt", "Toothpaste", "Ice Cream",
                 "Milk", "Butter", "Yogurt", "Toothpaste", "Ice Cream",
@@ -89,11 +94,12 @@ public class StatefulFragment extends BaseLoggerFragment implements Screen {
                 "END"
         };
 
-        adapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_list_item_1, items);
     }
 
     private void onInitViews() {
+        ArrayAdapter<String>  adapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_list_item_1, items);
+
         getButtonSimulateProperty().setOnClickListener(clicker);
         getButtonDisplayProperty().setOnClickListener(clicker);
         getButtonStartActivity().setOnClickListener(clicker);
@@ -142,31 +148,41 @@ public class StatefulFragment extends BaseLoggerFragment implements Screen {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("save:property", property);
+        onSaveExtraState(savedInstanceState);
     }
 
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         logState("onViewStateRestored: savedInstanceState = " + savedInstanceState);
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             property = savedInstanceState.getString("save:property", null);
+            onRestoreExtraState(savedInstanceState);
+        }
     }
 
-//    private Bundle onSaveViewStates() {
-//        Bundle bundle = new Bundle();
-////        int position = getListView().getFirstVisiblePosition();
-////        bundle.putInt("save:position", position);
-//        bundle.putString("save:textview", getTextView().getText().toString());
-//        return bundle;
-//    }
-//
-//    private void onRestoreViewStates(final Bundle bundle) {
-//        if (bundle != null) {
-//            int position = bundle.getInt("save:position");
-////        getListView().setSelection(position);
-//            String text = bundle.getString("save:textview");
-//            getTextView().setText(text);
-//        }
-//    }
+    // only save as a last resort
+    private Bundle onSaveExtraState(Bundle extraState) {
+        if (extraState == null) extraState = new Bundle();
+//        int position = getListView().getFirstVisiblePosition();
+//        bundle.putInt("save:position", position);
+        extraState.putString("save:textview", getTextView().getText().toString());
+        return extraState;
+    }
+
+    private void onRestoreExtraState(Bundle extraState) {
+        if (extraState != null) {
+            int position = extraState.getInt("save:position");
+//        getListView().setSelection(position);
+            String text = extraState.getString("save:textview");
+            getTextView().setText(text);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getSwitcher().putState(toString(), onSaveExtraState(null));
+    }
 
     @Override
     public boolean onBackPressed() {

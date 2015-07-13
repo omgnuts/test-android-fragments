@@ -43,9 +43,9 @@ public abstract class BaseLoggerFragment extends Fragment {
         return null;
     }
 
-    public void onStart() {
-        super.onStart();
-        log("F.B-onStart: setup listeners");
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        log("F.A3-onActivityCreated");
     }
 
     public void setInitialSavedState(SavedState state) {
@@ -56,6 +56,11 @@ public abstract class BaseLoggerFragment extends Fragment {
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         log("F.B2/C-onViewStateRestored: Should happen on orientation and press home. ");
+    }
+
+    public void onStart() {
+        super.onStart();
+        log("F.B3-onStart: setup listeners");
     }
 
     public void onResume() {
