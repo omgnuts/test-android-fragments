@@ -17,9 +17,7 @@ import com.jattcode.fragment.Screen;
 import com.jattcode.fragment.ScreenFragment;
 import com.jattcode.fragment.SwitcherActivity;
 
-/**
- * Created by Javan on 13/7/2015.
- */
+
 public class StatefulFragment extends ScreenFragment implements Screen {
 
     private TextView getTextView() {
@@ -159,25 +157,21 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         }
     }
 
+    private Bundle viewState = null;
+
     // only save as a last resort
     private Bundle onSaveViewState() {
-        if (viewState == null) viewState = new Bundle();
-//        int position = getListView().getFirstVisiblePosition();
-//        bundle.putInt("save:position", position);
+        viewState = new Bundle();
         viewState.putString("save:textview", getTextView().getText().toString());
         return viewState;
     }
 
     private void onRestoreViewState(Bundle viewState) {
         if (viewState != null) {
-            int position = viewState.getInt("save:position");
-//        getListView().setSelection(position);
             String text = viewState.getString("save:textview");
             getTextView().setText(text);
         }
     }
-
-    private Bundle viewState = null;
 
     @Override
     public void onDestroyView() {
