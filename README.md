@@ -4,7 +4,9 @@ This is for future me. The design pattern for activities
 
 ### Handling of data models
 
-Implement onLoadModel()
+Implement onLoadModel(), onInitViews()
+
+*Looks like onRestart() is totally ignored. Everything seems to restore properly, including view states*
 
 ```
 @Override
@@ -14,14 +16,6 @@ protected void onCreate(Bundle savedInstanceState) {
 
     // load data
     onLoadModel();
-    onInitViews();
-}
-
-protected void onRestart() {
-    super.onRestart();
-
-    // load data
-    onLoadModel(); --?? Is this necessary to call it here
     onInitViews();
 }
 
@@ -147,8 +141,9 @@ public void onConfigurationChanged(Configuration newConfig) {
         logState("onConfigurationChanged: Configuration.ORIENTATION_LANDSCAPE");
         setContentView(R.layout.activity_demo2_stateful);
     }
+    // onLoadModel // NO NEED TO LOAD THIS
     onInitViews();
-    onRestoreViewStates(bundle);
+    onRestoreViewStates(bundle); // -- to save transient view states
 }
 
 ```
