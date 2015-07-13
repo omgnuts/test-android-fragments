@@ -74,9 +74,9 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         onInitViews();
 
         // check if a state was stored via onDestroy
-        Bundle extraState = getSwitcher().getState(toString());
-        if (extraState != null) {
-            onRestoreExtraState(extraState);
+        Bundle viewState = getSwitcher().getState(toString());
+        if (viewState != null) {
+            onRestoreViewState(viewState);
         }
 
         return parentView;
@@ -148,7 +148,7 @@ public class StatefulFragment extends ScreenFragment implements Screen {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("save:property", property);
-        onSaveExtraState(savedInstanceState);
+        onSaveViewState(savedInstanceState);
     }
 
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -156,24 +156,24 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         logState("onViewStateRestored: savedInstanceState = " + savedInstanceState);
         if (savedInstanceState != null) {
             property = savedInstanceState.getString("save:property", null);
-            onRestoreExtraState(savedInstanceState);
+            onRestoreViewState(savedInstanceState);
         }
     }
 
     // only save as a last resort
-    private Bundle onSaveExtraState(Bundle extraState) {
-        if (extraState == null) extraState = new Bundle();
+    private Bundle onSaveViewState(Bundle viewState) {
+        if (viewState == null) viewState = new Bundle();
 //        int position = getListView().getFirstVisiblePosition();
 //        bundle.putInt("save:position", position);
-        extraState.putString("save:textview", getTextView().getText().toString());
-        return extraState;
+        viewState.putString("save:textview", getTextView().getText().toString());
+        return viewState;
     }
 
-    private void onRestoreExtraState(Bundle extraState) {
-        if (extraState != null) {
-            int position = extraState.getInt("save:position");
+    private void onRestoreViewState(Bundle viewState) {
+        if (viewState != null) {
+            int position = viewState.getInt("save:position");
 //        getListView().setSelection(position);
-            String text = extraState.getString("save:textview");
+            String text = viewState.getString("save:textview");
             getTextView().setText(text);
         }
     }
@@ -181,7 +181,15 @@ public class StatefulFragment extends ScreenFragment implements Screen {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        getSwitcher().putState(toString(), onSaveExtraState(null));
+        getSwitcher().putState(toString(), onSaveViewState(null));
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        // just to remove any residual references
+        // in case the fragment instance was destroyed permanently
+        // before its views ever got recreated.
+        getSwitcher().getState(toString());
     }
 
     @Override

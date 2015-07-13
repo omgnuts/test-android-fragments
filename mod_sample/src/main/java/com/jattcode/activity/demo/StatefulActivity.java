@@ -116,36 +116,37 @@ public class StatefulActivity extends BaseLoggerActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("save:property", property);
+        onSaveViewState(savedInstanceState);
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         logState("onRestoreInstanceState: savedInstanceState = " + savedInstanceState);
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             property = savedInstanceState.getString("save:property", null);
+            onRestoreViewState(savedInstanceState);
+        }
     }
 
-    private Bundle onSaveViewState() {
-        Bundle bundle = new Bundle();
-
+    private Bundle onSaveViewState(Bundle viewState) {
+        if (viewState == null) viewState = new Bundle();
         int position = getListView().getFirstVisiblePosition();
-        bundle.putInt("save:position", position);
-        bundle.putString("save:textview", getTextView().getText().toString());
-        return bundle;
+        viewState.putInt("save:position", position);
+        viewState.putString("save:textview", getTextView().getText().toString());
+        return viewState;
     }
 
-    private void onRestoreViewState(final Bundle bundle) {
-        int position = bundle.getInt("save:position");
+    private void onRestoreViewState(Bundle viewState) {
+        int position = viewState.getInt("save:position");
         getListView().setSelection(position);
-
-        String text = bundle.getString("save:textview");
+        String text = viewState.getString("save:textview");
         getTextView().setText(text);
     }
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Bundle bundle = onSaveViewState();
+        Bundle viewState = onSaveViewState(null);
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             logState("onConfigurationChanged: Configuration.ORIENTATION_PORTRAIT");
@@ -156,7 +157,7 @@ public class StatefulActivity extends BaseLoggerActivity {
         }
 
         onInitViews();
-        onRestoreViewState(bundle);
+        onRestoreViewState(viewState);
     }
 
 }
