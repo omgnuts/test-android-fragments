@@ -58,15 +58,22 @@ public class StatefulFragment extends BaseLoggerFragment implements Screen {
     private String property = "(property is unset)";
     private ArrayAdapter<String> adapter = null;
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        logState("onCreate - savedInstanceState = " + savedInstanceState);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        logState("onCreateView - savedInstanceState = " + savedInstanceState);
         parentView = inflater.inflate(R.layout.fragment_demo_stateful, container, false);
         context = getActivity();
 
         onLoadModel();
         onInitViews();
+
         return parentView;
     }
 
@@ -93,7 +100,6 @@ public class StatefulFragment extends BaseLoggerFragment implements Screen {
         getButtonStartFragment().setOnClickListener(clicker);
         getListView().setAdapter(adapter);
     }
-
 
     private final View.OnClickListener clicker = new View.OnClickListener() {
         @Override
@@ -144,6 +150,23 @@ public class StatefulFragment extends BaseLoggerFragment implements Screen {
         if (savedInstanceState != null)
             property = savedInstanceState.getString("save:property", null);
     }
+
+//    private Bundle onSaveViewStates() {
+//        Bundle bundle = new Bundle();
+////        int position = getListView().getFirstVisiblePosition();
+////        bundle.putInt("save:position", position);
+//        bundle.putString("save:textview", getTextView().getText().toString());
+//        return bundle;
+//    }
+//
+//    private void onRestoreViewStates(final Bundle bundle) {
+//        if (bundle != null) {
+//            int position = bundle.getInt("save:position");
+////        getListView().setSelection(position);
+//            String text = bundle.getString("save:textview");
+//            getTextView().setText(text);
+//        }
+//    }
 
     @Override
     public boolean onBackPressed() {

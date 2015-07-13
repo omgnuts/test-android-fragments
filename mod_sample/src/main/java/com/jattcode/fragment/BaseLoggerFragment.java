@@ -48,6 +48,11 @@ public abstract class BaseLoggerFragment extends Fragment {
         log("F.B-onStart: setup listeners");
     }
 
+    public void setInitialSavedState(SavedState state) {
+        super.setInitialSavedState(state);
+        log("F.B1-setInitialSavedState: ????");
+    }
+
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         log("F.B2/C-onViewStateRestored: Should happen on orientation and press home. ");

@@ -27,15 +27,15 @@ public abstract class ScreenSwitcher {
     protected abstract Fragment getFragment(int screenId);
 
     public void rootScreen() {
-        changeFragmentTransaction(getFragment(0), true, null);
+        changeFragmentTransaction(0, null);
     }
 
     public void changeScreen(int screenId) {
-        changeFragmentTransaction(getFragment(screenId), screenId == 0, null);
+        changeFragmentTransaction(screenId, null);
     }
 
     public void changeScreen(int screenId, Bundle bundle) {
-        changeFragmentTransaction(getFragment(screenId), screenId == 0, bundle);
+        changeFragmentTransaction(screenId, bundle);
     }
 
     public boolean onBackPressed() {
@@ -43,13 +43,26 @@ public abstract class ScreenSwitcher {
         return screen.onBackPressed();
     }
 
-    private void changeFragmentTransaction(Fragment fragment, boolean isRoot, Bundle bundle) {
-        if (bundle != null) fragment.setArguments(bundle);
+    private void changeFragmentTransaction(int screenId, Bundle bundle) {
+        final boolean isRoot = screenId == 0;
+
         if (isRoot) {
-            fragmentManager.beginTransaction()
-                    .replace(containerId, fragment, "root")
-                    .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+            // create a new instance if root is not found.
+            // else just pop backstack all the way to root.
+            Fragment fragment = fragmentManager.findFragmentByTag("root");
+            if (fragment == null) {
+                fragment = getFragment(screenId);
+                if (bundle != null) fragment.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace(containerId, fragment, "root")
+                        .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                        .commit();
+            } else {
+                if (bundle != null) fragment.setArguments(bundle);
+                int last = fragmentManager.getBackStackEntryCount() - 1;
+                int id = fragmentManager.getBackStackEntryAt(last).getId();
+                fragmentManager.popBackStack(id, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
         } else {
             // Original implementation used this code below
             // but that caused the pop before the replace happened
@@ -69,6 +82,9 @@ public abstract class ScreenSwitcher {
                 id = entry.getId();
             }
             // another method to look at would be to use a remove within the transaction
+
+            final Fragment fragment = getFragment(screenId);
+            if (bundle != null) fragment.setArguments(bundle);
 
             fragmentManager.beginTransaction()
                     .replace(containerId, fragment, "screen")
