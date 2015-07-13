@@ -101,6 +101,11 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         getButtonStartActivity().setOnClickListener(clicker);
         getButtonStartFragment().setOnClickListener(clicker);
         getListView().setAdapter(adapter);
+
+        /**
+         * setFreezeText makes the textview save its state on orientation change
+         */
+        getTextView().setFreezesText(true);
     }
 
     private final View.OnClickListener clicker = new View.OnClickListener() {
@@ -144,7 +149,6 @@ public class StatefulFragment extends ScreenFragment implements Screen {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("save:property", property);
-        onSaveViewState(savedInstanceState);
     }
 
     public void onViewStateRestored(Bundle savedInstanceState) {
@@ -152,12 +156,11 @@ public class StatefulFragment extends ScreenFragment implements Screen {
         logState("onViewStateRestored: savedInstanceState = " + savedInstanceState);
         if (savedInstanceState != null) {
             property = savedInstanceState.getString("save:property", null);
-            onRestoreViewState(savedInstanceState);
         }
     }
 
     // only save as a last resort
-    private Bundle onSaveViewState(Bundle viewState) {
+    private Bundle onSaveViewState() {
         if (viewState == null) viewState = new Bundle();
 //        int position = getListView().getFirstVisiblePosition();
 //        bundle.putInt("save:position", position);
@@ -179,7 +182,7 @@ public class StatefulFragment extends ScreenFragment implements Screen {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewState = onSaveViewState(null);
+        viewState = onSaveViewState();
     }
 
     public void onDestroy() {
