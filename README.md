@@ -156,4 +156,4 @@ Checked:
 - it jumps back to recreate just the views, but everything else is not lost.
 - you need to however, a) setup ui clickers, b) load the data back to views.
 
-Also see https://github.com/codepath/android_guides/wiki/Handling-Configuration-Changes
+Also see http://developer.android.com/guide/topics/resources/runtime-changes.html
