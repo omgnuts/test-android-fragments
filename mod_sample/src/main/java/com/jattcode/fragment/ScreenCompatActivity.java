@@ -15,6 +15,16 @@ public abstract class ScreenCompatActivity extends BaseLoggerActivity {
 
     public abstract ScreenSwitcher getSwitcher();
 
+    // on backpress
+    // and then you define a method allowBackPressed with the logic to allow back pressed or not
+    @Override
+    public void onBackPressed() {
+//        if(!drawer.isClosing() && getSwitcher().onBackPressed()) {
+        if (getSwitcher().onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
     /*
      Need to call super on ActivityResult - Bug in CompatActivity
       http://stackoverflow.com/questions/6147884/onactivityresult-not-being-called-in-fragment

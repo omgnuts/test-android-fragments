@@ -11,13 +11,13 @@ public class SwitcherActivity extends ScreenCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.switcher_activity);
-        switcher.defaultScreen();
+        switcher.rootScreen();
     }
 
     // use class here rather than enum to keep code cleaner
     public static final class ScreenType {
-        public static final int DEFAULT_FRAGMENT = -1;
-        public static final int RANDOM_FRAGMENT = 0;
+        public static final int ROOT = 0;
+        public static final int RANDOM_FRAGMENT = 1;
     }
 
     public ScreenSwitcher getSwitcher() {
@@ -35,10 +35,14 @@ public class SwitcherActivity extends ScreenCompatActivity {
         @Override
         protected Fragment getFragment(int screenId) {
             switch(screenId) {
+                case ScreenType.ROOT:
+                    return new DefaultFragment();
                 case ScreenType.RANDOM_FRAGMENT:
                     return new RandomFragment();
-                default: return new DefaultFragment();
+                default:
+                    return new DefaultFragment();
             }
+
         }
     }
 }

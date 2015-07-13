@@ -90,4 +90,9 @@ public class DefaultFragment extends BaseLoggerFragment implements Screen {
             }
         }
     };
+
+    @Override
+    public boolean onBackPressed() {
+        return true;
+    }
 }

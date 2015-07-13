@@ -19,4 +19,14 @@ public abstract class ScreenFragment extends BaseLoggerFragment implements Scree
         }
     }
 
+    /**
+     * Each fragment should be able to handle their own backpress
+     *
+     * @return true to all allow caller to continue handling backpress
+     * @return false to interrupt and handle the backpress
+     */
+    @Override
+    public boolean onBackPressed() {
+        return true;
+    }
 }

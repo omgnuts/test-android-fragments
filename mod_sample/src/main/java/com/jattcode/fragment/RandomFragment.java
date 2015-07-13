@@ -74,4 +74,9 @@ public class RandomFragment extends Fragment implements Screen {
             }
         }
     };
+
+    @Override
+    public boolean onBackPressed() {
+        return true;
+    }
 }

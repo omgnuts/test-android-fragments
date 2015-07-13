@@ -19,7 +19,7 @@ public abstract class BaseLoggerActivity extends AppCompatActivity {
         }
     }
 
-    protected void logState(String msg) {
+    public void logState(String msg) {
         Log.d(TAG, "............ " + msg);
     }
 
